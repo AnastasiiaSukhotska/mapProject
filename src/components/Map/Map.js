@@ -1,10 +1,9 @@
 import {GoogleMap, Marker} from '@react-google-maps/api';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ChosenSpot } from '../ChosenSpot/ChosenSpot';
-import { CurrentLocationMarker } from '../CurrentLocationMarker';
+import React, { useCallback, useRef, useState } from 'react';
 import { Spot } from '../Spot/Spot';
 import s from './Map.module.css';
 import { defaultTheme } from './Theme';
+import {v4 as uuid} from 'uuid';
 const containerStyle = {
     width: '800px',
     height: '800px'
@@ -14,9 +13,6 @@ const containerStyle = {
     MOVE: 0,
     SET_MARKER: 1
   }
-  
-
-
 const defaultOptions = {
     panControl: true,
     zoomControl: true,
@@ -34,29 +30,17 @@ const defaultOptions = {
   
 export const Map = ({center, mode, spots, onSpotAdd, chooseSpotHandler, chosenSpot}) => {
     const myRef = useRef(undefined);
-    /*
-    const [chosenSpot, setChosenSpot] = useState(null);
-    const [showChosenSpot, setShowChosenSpot] = useState(false);
-    */
     const onLoad = useCallback(function useCallback(map){
         myRef.current = map;
     }, [])
     const onUnmount = useCallback(function useCallback(map) {
         myRef.current = undefined;
     }, [])
-/*
-    const onSpotClick = (index) => {
-           setShowChosenSpot(true);
-            setChosenSpot(spots.find(s=>s.index==index));
-        
-    }
-
-*/
     const onClick = useCallback((loc) => {
         if (mode === MODES.SET_MARKER) {
             const lat = loc.latLng.lat();
             const lng = loc.latLng.lng();
-            onSpotAdd({lat, lng, text: 'Hello', name: spots.length+1, description: spots.length+1, index: spots.length+1})
+            onSpotAdd({lat, lng, name: spots.length+1, description: spots.length+1, id: uuid(), adverts: [], currentValueAdvertTitle: '', currentValueAdvertDescription: ''})
         }
     }, [mode, onSpotAdd])
     return(
@@ -75,10 +59,8 @@ export const Map = ({center, mode, spots, onSpotAdd, chooseSpotHandler, chosenSp
             <Marker position={center}/>
           
             {spots.map((pos) => {
-                return <Spot position={pos} key={pos.index} onSpotClick={chooseSpotHandler}/>;
+                return <Spot position={pos} key={pos.id} onSpotClick={chooseSpotHandler}/>;
             })}
         </GoogleMap>
-        
-       {/* {showChosenSpot ? <ChosenSpot spot={chosenSpot} /> : 'no selected'} */}
     </div>
     )}

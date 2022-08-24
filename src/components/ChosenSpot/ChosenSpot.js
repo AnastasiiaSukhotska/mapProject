@@ -1,6 +1,6 @@
 export const ChosenSpot = ({spot}) => {
 
-    console.log(spot.name);
+    console.log('bhybliybgilyg');
     return (
         <div>
             {spot.name}
