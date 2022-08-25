@@ -1,10 +1,10 @@
 import { Marker } from "@react-google-maps/api"
-export const Spot = ({position, onSpotClick}) => {
-    const onSpotClickHandler = () => {
-        onSpotClick(position.id);
-        
+export const Spot = ({ spot, chooseSpotHandler }) => {
+    const chooseSpot = () => {
+        chooseSpotHandler(spot.id);
+
     }
     return (
-        <Marker onClick={onSpotClickHandler}  icon = {{url : './logo512.png'}} position = {position} label={{text:'My Spot', fontSize:'20px', color:'red'}}  />
+        <Marker onClick={chooseSpot} icon={{ url: './logo512.png' }} position={spot} label={{ text: 'My Spot', fontSize: '20px', color: 'red' }} />
     )
 }

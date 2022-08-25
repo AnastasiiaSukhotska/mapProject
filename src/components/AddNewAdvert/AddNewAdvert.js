@@ -21,7 +21,7 @@ export const AddNewAdvert = ({ addNewAdvertHandler, updateAdvetTitleHandler, upd
             <form onSubmit={addNewAdvert}>
                 <input placeholder='Type tytle' onChange={updateTitleInput} value={currentAdvetTitleValue}></input>
                 <input placeholder='Type description' onChange={updateDescriptionInput} value={currentAdvetDescriptionValue}></input>
-                <button type='submit'>Add</button>
+                <button type='submit'>Add New Advert</button>
             </form>
         </div>
     )

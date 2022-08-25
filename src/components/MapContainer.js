@@ -1,6 +1,6 @@
 import { useJsApiLoader } from "@react-google-maps/api"
 import { Map, MODES } from "./Map/Map";
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { AddNewAdvert } from "./AddNewAdvert/AddNewAdvert";
 import { AdvertList } from "./AdvertList/AdvetList";
 import { AddNewSpot } from "./AddNewSpot/AddNewSpot";
@@ -10,12 +10,9 @@ const defaulCenter = {
   lat: -3.745,
   lng: -38.523
 };
-
-
 const libraries = ['places'];
 export const MapContainer = () => {
   const [center, setCenter] = useState(defaulCenter);
-  const [mode, setMode] = useState(MODES.MOVE);
   const [spots, setSpots] = useState([]);
   const [currentAdvetTitleValue, setCurrentAdvetTitleValue] = useState('');
   const [currentAdvetDescriptionValue, setCurrentAdvetDescriptionValue] = useState('');
@@ -30,78 +27,74 @@ export const MapContainer = () => {
   })
   const onPlaceSelect = useCallback(
     (coordinates) => {
-      setCenter(coordinates)
-    },
-    []
-  )
+      setCenter(coordinates);
+    }, [])
 
-  const toggleMode = useCallback(() => {
-    switch (mode) {
-      case MODES.SET_MARKER:
-        setMode(MODES.MOVE);
-        break;
-      case MODES.MOVE:
-        setMode(MODES.SET_MARKER);
-        break;
-      default: setMode(MODES.MOVE);
-    }
-  }, [mode])
-
-  const onSpotAdd = (coordinates) => {
-    setSpots([...spots, coordinates])
+  const onSpotAdd = (lat, lng) => {
+    setSpots([...spots, { lat, lng, id: uuid(), adverts: [] }]);
   }
 
   const onNewSpotCoordinateSelect = useCallback(
     (coordinates) => {
-      setNewCoordinate(coordinates)
+      setNewCoordinate(coordinates);
     }, [])
 
-  const onSpotClick = (id) => {
+  const onSpotChooseHandler = (id) => {
     if (chosenSpot && chosenSpot.id === id) {
       setChosenSpot({});
-      setShowChosenSpot(false)
+      setShowChosenSpot(false);
     }
     else {
-      setChosenSpot(spots.find(s => s.id == id))
-      setShowChosenSpot(true)
+      setChosenSpot(spots.find(s => s.id === id));
+      setShowChosenSpot(true);
     }
   }
 
-  const addNewSpotHandler = () => {
-    setSpots([...spots, { id: uuid, name: 'ijoi', lat: newCoordinate.lat, lng: newCoordinate.lng, adverts: [{ title: currentAdvetTitleValue, description: currentAdvetDescriptionValue }] }])
+  const onAddNewSpotHandler = () => {
+    let id = uuid();
+    setSpots([...spots, { id: id, lat: newCoordinate.lat, lng: newCoordinate.lng, adverts: [{ title: currentAdvetTitleValue, description: currentAdvetDescriptionValue, spotId: id }] }]);
+    setCurrentAdvetDescriptionValue('');
+    setCurrentAdvetTitleValue('');
+    setNewCoordinate({});
   }
 
-  const addNewAdvertHandler = () => {
+  const onAddNewAdvertHandler = () => {
     let updatedSpot = spots.find(spot => spot.id === chosenSpot.id);
-    updatedSpot = { ...updatedSpot, adverts: [...updatedSpot.adverts, { title: currentAdvetTitleValue, description: currentAdvetDescriptionValue }] }
+    updatedSpot = { ...updatedSpot, adverts: [...updatedSpot.adverts, { title: currentAdvetTitleValue, description: currentAdvetDescriptionValue, spotId: updatedSpot.id }] }
     let spotsList = spots.map(spot => spot.id === updatedSpot.id ? updatedSpot : spot);
     setSpots(spotsList);
-    setChosenSpot({ ...chosenSpot, adverts: [...chosenSpot.adverts, { title: currentAdvetTitleValue, description: currentAdvetDescriptionValue }] })
+    setChosenSpot({ ...chosenSpot, adverts: [...chosenSpot.adverts, { title: currentAdvetTitleValue, description: currentAdvetDescriptionValue, spotId: chosenSpot.id }] })
     setCurrentAdvetDescriptionValue('');
     setCurrentAdvetTitleValue('');
   }
 
-  useEffect(() => {
-    console.log(spots);
-  }, [spots])
-
-  const updateAdvetTitleHandler = (value) => {
+  const onUpdateAdvetTitleHandler = (value) => {
     setCurrentAdvetTitleValue(value);
   }
 
-  const updateAdvetDescriptionHandler = (value) => {
+  const onUpdateAdvetDescriptionHandler = (value) => {
     setCurrentAdvetDescriptionValue(value);
 
+  }
+
+  const onMoveToChosenAdvertSpotHandler = (id) => {
+    onSpotChooseHandler(id);
+    let centeredSpot = spots.find(spot => spot.id === id);
+    console.log(centeredSpot);
+    setCenter({ lat: centeredSpot.lat, lng: centeredSpot.lng });
   }
 
 
   return (
     <div>
-      {showChosenSpot ? <AddNewAdvert spot={chosenSpot} addNewAdvertHandler={addNewAdvertHandler} updateAdvetTitleHandler={updateAdvetTitleHandler} updateAdvetDescriptionHandler={updateAdvetDescriptionHandler} currentAdvetTitleValue={currentAdvetTitleValue} currentAdvetDescriptionValue={currentAdvetDescriptionValue} /> :  <AddNewSpot onSelect={onPlaceSelect} isLoaded={isLoaded} addNewSpotHandler={addNewSpotHandler} onNewSpotCoordinateSelect={onNewSpotCoordinateSelect} updateAdvetTitleHandler={updateAdvetTitleHandler} updateAdvetDescriptionHandler={updateAdvetDescriptionHandler} currentAdvetTitleValue={currentAdvetTitleValue} currentAdvetDescriptionValue={currentAdvetDescriptionValue}/>}
-      <button onClick={toggleMode}>Set Markers</button>
+      {showChosenSpot ?
+        <AddNewAdvert spot={chosenSpot} addNewAdvertHandler={onAddNewAdvertHandler} updateAdvetTitleHandler={onUpdateAdvetTitleHandler} updateAdvetDescriptionHandler={onUpdateAdvetDescriptionHandler} currentAdvetTitleValue={currentAdvetTitleValue} currentAdvetDescriptionValue={currentAdvetDescriptionValue} />
+        : <AddNewSpot onSelect={onPlaceSelect} isLoaded={isLoaded} addNewSpotHandler={onAddNewSpotHandler} onNewSpotCoordinateSelect={onNewSpotCoordinateSelect} updateAdvetTitleHandler={onUpdateAdvetTitleHandler} updateAdvetDescriptionHandler={onUpdateAdvetDescriptionHandler} currentAdvetTitleValue={currentAdvetTitleValue} currentAdvetDescriptionValue={currentAdvetDescriptionValue} chosenSpot={chosenSpot} />}
       <div className={style.contentContainer}>
-      {isLoaded ? <Map mode={mode} center={center} spots={spots} onSpotAdd={onSpotAdd} chosenSpot={chosenSpot} chooseSpotHandler={onSpotClick} /> : 'hello'}
-      {<AdvertList spots={spots} chosenSpot={chosenSpot} showChosenSpot={showChosenSpot} />}
+        {isLoaded ?
+          <Map center={center} spots={spots} onSpotAdd={onSpotAdd} chosenSpot={chosenSpot} chooseSpotHandler={onSpotChooseHandler} />
+          : 'hello'}
+        {<AdvertList moveToChosenAdvertSpotHandler={onMoveToChosenAdvertSpotHandler} spots={spots} chosenSpot={chosenSpot} showChosenSpot={showChosenSpot} />}
       </div>
     </div>
   )
