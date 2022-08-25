@@ -1,8 +1,11 @@
 .itemContainer {
-   margin: 20px;
+    background-color: rgb(245,245,245);
     display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     justify-content: center;
-    border: 1px solid black;
+    box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.3);
     padding: 10px;
+    margin-bottom: 10px;
 
 }

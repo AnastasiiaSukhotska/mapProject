@@ -1,3 +1,36 @@
+.submitButton {
+  border-radius: 7px;
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.submitButton:hover{
+  background-color: rgb(220,220,220);
+}
+
+.formContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.formInput {
+  position: relative;
+  margin-right: 15px;
+  height: 30px;
+  border-radius: 7px;
+  border: none;
+  padding: 5px;
+}
+
+.formInput:focus {
+  box-shadow: 2px 1px 2px 1px rgba(105,105,105, 0.7);
+  border-radius: 7px;
+  outline: none;
+}
+
+
 .App {
   text-align: center;
 }

@@ -1,3 +1,9 @@
 .container {
-    height: 100hv;
+    height: 100vh;
+}
+
+.map {
+    height: 100%;
+    width: 100%;
+    min-height: 100vh;
 }

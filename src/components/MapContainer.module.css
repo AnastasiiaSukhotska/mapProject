@@ -1,4 +1,29 @@
-.contentContainer {
-    display: flex;
+.mainContainer {
+    display: grid;
+    grid-template-areas:
+     'h h'
+     'm s';
+    position: relative;
+    grid-template-rows: 80px 1fr;
     grid-template-columns: 10fr 2fr;
+    width: 100%;
+    height: 100%;
+    min-width: 100vw;
+    min-height: 100vh;
+}
+.headerContainer {
+    grid-area: h;
+    width: 100%;
+    background-color: rgb(128,128,128);
+    padding: 20px;
+    box-shadow: -5px 1px 6px 1px #000;
+    margin-bottom: 2px;
+}
+
+.sidebarContainr{
+    grid-area: s;
+}
+
+.mapContainer{
+    grid-area: m;
 }

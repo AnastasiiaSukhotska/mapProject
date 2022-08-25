@@ -5,6 +5,6 @@ export const Spot = ({ spot, chooseSpotHandler }) => {
 
     }
     return (
-        <Marker onClick={chooseSpot} icon={{ url: './logo512.png' }} position={spot} label={{ text: 'My Spot', fontSize: '20px', color: 'red' }} />
+        <Marker onClick={chooseSpot} icon={{ url: '/pin-point-svgrepo-com.svg' }} position={spot}  />
     )
 }

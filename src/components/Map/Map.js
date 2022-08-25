@@ -4,8 +4,8 @@ import { Spot } from '../Spot/Spot';
 import s from './Map.module.css';
 import { defaultTheme } from './Theme';
 const containerStyle = {
-    width: '800px',
-    height: '800px'
+    width: '100%',
+    height: '100%'
   };
 
  export const MODES = {
@@ -43,6 +43,7 @@ export const Map = ({center, spots, onSpotAdd, chooseSpotHandler}) => {
     return(
     <div className= {s.container}>
         <GoogleMap
+            mapContainerClassName={s.map}
             mapContainerStyle={containerStyle}
             center={center}
             zoom={10}

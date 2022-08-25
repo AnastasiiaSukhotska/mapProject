@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { AdvertItem } from "./AdvertItem/AdvertItem"
-
+import { AdvertItem } from "./AdvertItem/AdvertItem";
+import style from './AdvertList.module.css';
 export const AdvertList = ({ spots, chosenSpot, showChosenSpot, moveToChosenAdvertSpotHandler }) => {
     const advertItemMapper = (advert) => (<AdvertItem advert={advert} key={advert.title} moveToChosenAdvertSpotHandler={moveToChosenAdvertSpotHandler} />);
     const showAllSpotsAdverts = useMemo(() => spots.flatMap(spot => spot.adverts).map(advertItemMapper), [spots]);
@@ -10,7 +10,7 @@ export const AdvertList = ({ spots, chosenSpot, showChosenSpot, moveToChosenAdve
         }
     }, [chosenSpot])
     return (
-        <div>
+        <div className={style.advertsListContainer}>
             {showChosenSpot ? showChosenSpotAdvert : showAllSpotsAdverts}
         </div>
     )

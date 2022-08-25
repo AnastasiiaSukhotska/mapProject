@@ -1,10 +1,11 @@
+import style from './AddNewSpot.module.css';
 import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
 } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { useEffect } from 'react';
-export const AddNewSpot = ({ isLoaded, onSelect, onNewSpotCoordinateSelect, updateAdvetTitleHandler, updateAdvetDescriptionHandler, currentAdvetTitleValue, currentAdvetDescriptionValue, addNewSpotHandler }) => {
+export const AddNewSpot = ({ error, isLoaded, onSelect, onNewSpotCoordinateSelect, updateAdvetTitleHandler, updateAdvetDescriptionHandler, currentAdvetTitleValue, currentAdvetDescriptionValue, addNewSpotHandler }) => {
     const {
         ready,
         value,
@@ -72,19 +73,23 @@ export const AddNewSpot = ({ isLoaded, onSelect, onNewSpotCoordinateSelect, upda
         }
     }, [isLoaded, init])
     return (
-        <form onSubmit={addNewSpot}>
-            <div ref={ref}>
-                <input
-                    type='text'
-                    value={value}
-                    onChange={updatePlaceInput}
-                    disabled={!ready}
-                    placeholder="Where are you going?" />
-                {status === "OK" && <ul>{renderSuggestions()}</ul>}
-            </div>
-            <input type='text' placeholder='Type title' onChange={updateTitleInput} value={currentAdvetTitleValue} />
-            <input type='text' placeholder='Type description' onChange={updateDescriptionInput} value={currentAdvetDescriptionValue} />
-            <button type='submit'>Add New Spot</button>
-        </form>
+      
+            <form onSubmit={addNewSpot} className='formContainer'>
+                <span>{error ? {error} : ''}</span>
+                <div ref={ref}>
+                    <input
+                        className='formInput'
+                        type='text'
+                        value={value}
+                        onChange={updatePlaceInput}
+                        disabled={!ready}
+                        placeholder="Where are you going?" />
+                    {status === "OK" &&(<ul className={style.suggestionPlacesList}>{renderSuggestions()}</ul>)}
+                </div>
+                <input type='text' className='formInput' placeholder='Type title' onChange={updateTitleInput} value={currentAdvetTitleValue} />
+                <input type='text' className='formInput' placeholder='Type description' onChange={updateDescriptionInput} value={currentAdvetDescriptionValue} />
+                <button className='submitButton' type='submit'>Add New Spot</button>
+            </form>
+        
     )
 }

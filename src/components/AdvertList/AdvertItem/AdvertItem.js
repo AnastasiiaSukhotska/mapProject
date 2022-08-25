@@ -6,10 +6,11 @@ export const AdvertItem = ({ advert, moveToChosenAdvertSpotHandler }) => {
 
     return (
         <div className={style.itemContainer} onClick={moveToChosenAdvertSpot}>
-            <div>
+            <div><img src='img/room2.jpeg' width='150px' height='100px'/></div>
+            <h2 className={style.itemTitle}>
                 {advert.title}
-            </div>
-            <div>
+            </h2>
+            <div className={style.description}>
                 {advert.description}
             </div>
         </div>

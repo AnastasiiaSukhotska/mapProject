@@ -18,10 +18,10 @@ export const AddNewAdvert = ({ addNewAdvertHandler, updateAdvetTitleHandler, upd
 
     return (
         <div>
-            <form onSubmit={addNewAdvert}>
-                <input placeholder='Type tytle' onChange={updateTitleInput} value={currentAdvetTitleValue}></input>
-                <input placeholder='Type description' onChange={updateDescriptionInput} value={currentAdvetDescriptionValue}></input>
-                <button type='submit'>Add New Advert</button>
+            <form onSubmit={addNewAdvert} className='formContainer'>
+                <input placeholder='Type tytle' className='formInput' onChange={updateTitleInput} value={currentAdvetTitleValue}></input>
+                <input placeholder='Type description' className='formInput' onChange={updateDescriptionInput} value={currentAdvetDescriptionValue}></input>
+                <button className='submitButton' type='submit'>Add New Advert</button>
             </form>
         </div>
     )
