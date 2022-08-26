@@ -9,13 +9,6 @@ import { MapContainer } from './components/MapContainer';
 
 
 function App() {
-
-  
-
-
-
-
- 
   return (
     <div className="App">
       <MapContainer />

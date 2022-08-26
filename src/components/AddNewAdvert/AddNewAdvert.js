@@ -1,5 +1,5 @@
 
-export const AddNewAdvert = ({ addNewAdvertHandler, updateAdvetTitleHandler, updateAdvetDescriptionHandler, currentAdvetTitleValue, currentAdvetDescriptionValue }) => {
+export const AddNewAdvert = ({error, addNewAdvertHandler, updateAdvetTitleHandler, updateAdvetDescriptionHandler, currentAdvetTitleValue, currentAdvetDescriptionValue }) => {
     const updateTitleInput = (e) => {
         let titleValue = e.target.value;
         updateAdvetTitleHandler(titleValue);
@@ -23,6 +23,7 @@ export const AddNewAdvert = ({ addNewAdvertHandler, updateAdvetTitleHandler, upd
                 <input placeholder='Type description' className='formInput' onChange={updateDescriptionInput} value={currentAdvetDescriptionValue}></input>
                 <button className='submitButton' type='submit'>Add New Advert</button>
             </form>
+            {error ? <div>{error}</div>: ''}
         </div>
     )
 }

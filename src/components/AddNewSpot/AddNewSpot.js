@@ -1,11 +1,13 @@
 import style from './AddNewSpot.module.css';
+import {useFormik} from 'formik';
+import * as Yup from 'yup';
 import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
 } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { useEffect } from 'react';
-export const AddNewSpot = ({ error, isLoaded, onSelect, onNewSpotCoordinateSelect, updateAdvetTitleHandler, updateAdvetDescriptionHandler, currentAdvetTitleValue, currentAdvetDescriptionValue, addNewSpotHandler }) => {
+export const AddNewSpot = ({error, isLoaded, onSelect, onNewSpotCoordinateSelect, updateAdvetTitleHandler, updateAdvetDescriptionHandler, currentAdvetTitleValue, currentAdvetDescriptionValue, addNewSpotHandler }) => {
     const {
         ready,
         value,
@@ -38,10 +40,31 @@ export const AddNewSpot = ({ error, isLoaded, onSelect, onNewSpotCoordinateSelec
                 // Get latitude and longitude via utility functions
                 getGeocode({ address: description }).then((results) => {
                     const { lat, lng } = getLatLng(results[0]);
-                    onNewSpotCoordinateSelect({ lat, lng });
-                    onSelect({ lat, lng })
+                 onNewSpotCoordinateSelect({ lat, lng });
+                  onSelect({ lat, lng })
                 });
             };
+/*
+            const formik = useFormik({
+                initialValues: {
+                 
+                    advertTitle: '',
+                    advertDescription: '',
+                },
+                validationSchema: Yup.object({
+                    advertTitle: Yup.string()
+                    .required('Required'),
+                    advertDescription: Yup.string()
+                    .required('Required'),
+
+                }),
+               onSubmit: (values, value) => {
+                   console.log(values)
+                }
+
+            })
+
+      */ 
     const updateTitleInput = (e) => {
         let titleValue = e.target.value;
         updateAdvetTitleHandler(titleValue);
@@ -52,9 +75,13 @@ export const AddNewSpot = ({ error, isLoaded, onSelect, onNewSpotCoordinateSelec
     }
     const addNewSpot = (e) => {
         e.preventDefault();
-        addNewSpotHandler();
-        setValue('')
+    
+            addNewSpotHandler();
+            setValue('')
+      
     }
+
+
     const renderSuggestions = () =>
         data.map((suggestion) => {
             const {
@@ -73,11 +100,12 @@ export const AddNewSpot = ({ error, isLoaded, onSelect, onNewSpotCoordinateSelec
         }
     }, [isLoaded, init])
     return (
-      
+        <div>
             <form onSubmit={addNewSpot} className='formContainer'>
-                <span>{error ? {error} : ''}</span>
+            
                 <div ref={ref}>
                     <input
+                    id='spots'
                         className='formInput'
                         type='text'
                         value={value}
@@ -86,10 +114,11 @@ export const AddNewSpot = ({ error, isLoaded, onSelect, onNewSpotCoordinateSelec
                         placeholder="Where are you going?" />
                     {status === "OK" &&(<ul className={style.suggestionPlacesList}>{renderSuggestions()}</ul>)}
                 </div>
-                <input type='text' className='formInput' placeholder='Type title' onChange={updateTitleInput} value={currentAdvetTitleValue} />
-                <input type='text' className='formInput' placeholder='Type description' onChange={updateDescriptionInput} value={currentAdvetDescriptionValue} />
+                <input id='advertTitle' type='text' className='formInput' placeholder='Type title' onChange={updateTitleInput} value={currentAdvetTitleValue} />
+                <input id='advertDescription' type='text' className='formInput' placeholder='Type description' onChange={updateDescriptionInput} value={currentAdvetDescriptionValue}/>
                 <button className='submitButton' type='submit'>Add New Spot</button>
             </form>
-        
+            {error ? <div>{error}</div>: ''}
+            </div>
     )
 }

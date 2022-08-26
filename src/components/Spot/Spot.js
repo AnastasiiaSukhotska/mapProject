@@ -1,10 +1,9 @@
 import { Marker } from "@react-google-maps/api"
-export const Spot = ({ spot, chooseSpotHandler }) => {
+export const Spot = ({ spot, chooseSpotHandler, chosenSpot, iconPath }) => {
     const chooseSpot = () => {
         chooseSpotHandler(spot.id);
-
     }
     return (
-        <Marker onClick={chooseSpot} icon={{ url: '/pin-point-svgrepo-com.svg' }} position={spot}  />
+        <Marker onClick={chooseSpot} icon={{ url: iconPath }} position={spot}   />
     )
 }
