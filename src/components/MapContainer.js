@@ -27,8 +27,8 @@ export const MapContainer = () => {
   const API_KEY = process.env.REACT_APP_API_KEY;
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: 'Your key',
-    //past key here
+    googleMapsApiKey: 'AIzaSyBdaxwBJLN90IZFktUxGkLZ2VPWUxUF480',
+   
     libraries
   })
   const onPlaceSelect = useCallback(
