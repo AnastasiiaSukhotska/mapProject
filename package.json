@@ -2,6 +2,9 @@
   "name": "my-map-test-project",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "16.13.0"
+  },
   "dependencies": {
     "@react-google-maps/api": "^2.12.1",
     "@testing-library/jest-dom": "^5.16.5",
