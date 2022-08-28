@@ -5,7 +5,6 @@ export const AdvertList = ({ spots, chosenSpot, showChosenSpot, moveToChosenAdve
     const advertItemMapper = (advert) => (<AdvertItem advert={advert} key={advert.title} moveToChosenAdvertSpotHandler={moveToChosenAdvertSpotHandler} />);
     const showAllSpotsAdverts = useMemo(() =>{
         if (bounds) {
-            console.log(spots.filter(s=> bounds.contains({lat: s.lat, lng: s.lng})));
           return  spots.filter(s=> bounds.contains({lat: s.lat, lng: s.lng})).flatMap(spot =>  spot.adverts).map(advertItemMapper)
 
         }

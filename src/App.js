@@ -1,12 +1,6 @@
 
-
 import './App.css';
-import { MapContainer } from './components/MapContainer';
-
-
-
-
-
+import { MapContainer } from './MapModule/MapContainer';
 
 function App() {
   return (

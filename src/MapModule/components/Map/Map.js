@@ -1,5 +1,5 @@
-import { GoogleMap, Marker } from '@react-google-maps/api';
-import React, { useCallback, useRef } from 'react';
+import { GoogleMap } from '@react-google-maps/api';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Spot } from '../Spot/Spot';
 import s from './Map.module.css';
 import { defaultTheme } from './Theme';
@@ -22,14 +22,23 @@ const defaultOptions = {
     styles: defaultTheme
 }
 
-export const Map = ({ center, spots, onSpotAdd, chooseSpotHandler, chosenSpot, zoomMapHandler }) => {
+export const Map = ({ center, spots, setInitialSpots, onSpotAdd, chooseSpotHandler, chosenSpot, zoomMapHandler }) => {
     const myRef = useRef(undefined);
     const onLoad = useCallback(function useCallback(map) {
         myRef.current = map;
+      
+
     }, [])
+
+    useEffect(() => {
+        if(myRef) {
+            setInitialSpots();
+        }
+    }, [myRef, onLoad])
     const onUnmount = useCallback(function useCallback(map) {
         myRef.current = undefined;
     }, [])
+
     const onClick = useCallback((loc) => {
         const lat = loc.latLng.lat();
         const lng = loc.latLng.lng();
@@ -39,14 +48,12 @@ export const Map = ({ center, spots, onSpotAdd, chooseSpotHandler, chosenSpot, z
     const onZoomChanged = useCallback(function useCallback() {
        if(myRef.current !== undefined){
         let bounds = myRef.current.getBounds();
-        console.log(bounds);  
         zoomMapHandler(bounds); 
     }}, [spots])
 
     const onDrag = useCallback(function useCallback() {
         if(myRef.current !== undefined){
          let bounds = myRef.current.getBounds();
-         console.log(bounds);  
          zoomMapHandler(bounds);
      }}, [spots])
 
@@ -66,9 +73,9 @@ export const Map = ({ center, spots, onSpotAdd, chooseSpotHandler, chosenSpot, z
             >
                 {spots.map((spot) => {
                     if (chosenSpot && (chosenSpot.id === spot.id)) {
-                        return (<Spot spot={spot} iconPath='/chosenSpotIcon.svg' chosenSpot={chosenSpot} key={spot.id} chooseSpotHandler={chooseSpotHandler} />)
+                        return (<Spot spot={spot} iconPath='/icons/chosenSpotIcon.svg' chosenSpot={chosenSpot} key={spot.id} chooseSpotHandler={chooseSpotHandler} />)
                     } else {
-                        return (<Spot spot={spot} iconPath='/spotIcon.svg' chosenSpot={chosenSpot} key={spot.id} chooseSpotHandler={chooseSpotHandler} />);
+                        return (<Spot spot={spot} iconPath='/icons/spotIcon.svg' chosenSpot={chosenSpot} key={spot.id} chooseSpotHandler={chooseSpotHandler} />);
                     }
                 })}
             </GoogleMap>

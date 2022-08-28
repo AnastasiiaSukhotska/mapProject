@@ -1,11 +1,12 @@
 import { useJsApiLoader } from "@react-google-maps/api"
-import { Map, MODES } from "./Map/Map";
-import { useCallback, useEffect, useState } from 'react';
-import { AddNewAdvert } from "./AddNewAdvert/AddNewAdvert";
-import { AdvertList } from "./AdvertList/AdvetList";
-import { AddNewSpot } from "./AddNewSpot/AddNewSpot";
+import { Map } from "./components/Map/Map";
+import { useCallback, useState } from 'react';
+import { AddNewAdvert } from "./components/AddNewAdvert/AddNewAdvert";
+import { AdvertList } from "./components/AdvertList/AdvetList";
+import { AddNewSpot } from "./components/AddNewSpot/AddNewSpot";
 import { v4 as uuid } from 'uuid';
 import style from './MapContainer.module.css';
+import { initialState } from "./initialState";
 
 const defaulCenter = {
   lat: 50.450,
@@ -13,8 +14,9 @@ const defaulCenter = {
 };
 
 const libraries = ['places'];
-export const MapContainer = () => {
 
+
+export const MapContainer = () => {
   const [center, setCenter] = useState(defaulCenter);
   const [spots, setSpots] = useState([]);
   const [currentAdvetTitleValue, setCurrentAdvetTitleValue] = useState('');
@@ -28,7 +30,7 @@ export const MapContainer = () => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyBdaxwBJLN90IZFktUxGkLZ2VPWUxUF480',
-   
+
     libraries
   })
   const onPlaceSelect = useCallback(
@@ -107,6 +109,12 @@ export const MapContainer = () => {
     setBounds(bounds);
   }
 
+  const setInitialSpots = () => {
+    setSpots(initialState);
+  }
+
+
+
   return (
     <div className={style.mainContainer}>
       <div className={style.headerContainer}>
@@ -116,7 +124,7 @@ export const MapContainer = () => {
       </div>
 
       {isLoaded ?
-        <Map className={style.mapContainer} zoomMapHandler={onZoomMapHandler}  center={center} spots={spots} onSpotAdd={onSpotAdd} chosenSpot={chosenSpot} chooseSpotHandler={onSpotChooseHandler} />
+        <Map className={style.mapContainer} setInitialSpots={setInitialSpots} zoomMapHandler={onZoomMapHandler} center={center} spots={spots} onSpotAdd={onSpotAdd} chosenSpot={chosenSpot} chooseSpotHandler={onSpotChooseHandler} />
         : 'hello'}
       {<AdvertList className={style.sidebarContainr} bounds={bounds} moveToChosenAdvertSpotHandler={onMoveToChosenAdvertSpotHandler} spots={spots} chosenSpot={chosenSpot} showChosenSpot={showChosenSpot} />}
     </div>

@@ -1,5 +1,5 @@
 import { Marker } from "@react-google-maps/api"
-export const Spot = ({ spot, chooseSpotHandler, chosenSpot, iconPath }) => {
+export const Spot = ({ spot, chooseSpotHandler, iconPath }) => {
     const chooseSpot = () => {
         chooseSpotHandler(spot.id);
     }
